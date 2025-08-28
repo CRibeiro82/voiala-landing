@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Voiala</title>
+  <style>
+    body {
+      font-family: 'Poppins', Arial, sans-serif;
+      text-align: center;
+      padding: 60px 20px;
+      background: #0A0A0F;
+      color: #fff;
+    }
+    img.logo {
+      width: 150px;
+      margin-bottom: 20px;
+    }
+    h1 {
+      font-size: 2.4em;
+      color: #B86BFF;
+    }
+    p {
+      font-size: 1.2em;
+      margin-bottom: 30px;
+    }
+    form input {
+      padding: 12px;
+      width: 250px;
+      border-radius: 6px;
+      border: none;
+      margin-right: 10px;
+    }
+    form button {
+      padding: 12px 20px;
+      border-radius: 6px;
+      border: none;
+      font-weight: bold;
+      background: linear-gradient(90deg, #B86BFF, #46F5E6);
+      color: #fff;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+    form button:hover {
+      transform: scale(1.05);
+    }
+    footer {
+      margin-top: 40px;
+      font-size: 0.9em;
+      color: #aaa;
+    }
+  </style>
+  <!-- Importar Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+  <!-- Logo -->
+  <img src="https://cdn.abacus.ai/images/fcd04120-9f7f-4a74-9415-48711bb55fbd.png"
+alt="Voiala Logo" class="logo">
+
+  <!-- Headline -->
+  <h1>Seu mentor virtual, quando e como você precisar.</h1>
+  
+  <!-- Subheadline -->
+  <p>Descubra personas virtuais exclusivas, prontas para inspirar, orientar e transformar seu dia.</p>
+
+  <!-- Formulário -->
+  <form id="leadForm">
+    <input type="email" id="emailInput" placeholder="Digite seu e-mail" required>
+    <button type="submit">Entrar na lista VIP 🚀</button>
+  </form>
+
+  <!-- Rodapé -->
+  <footer>
+    Feito com ✨ pelo Voiala
+  </footer>
+
+  <!-- Firebase -->
+  <script type="module">
+    // Importando Firebase
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
+    import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
+
+    // Config Firebase (substitua pelos valores do seu .env)
+    const firebaseConfig = {
+      apiKey: "YOUR_FIREBASE_KEY",
+      authDomain: "YOUR_FIREBASE_DOMAIN",
+      projectId: "YOUR_PROJECT_ID",
+      storageBucket: "YOUR_STORAGE_BUCKET",
+      messagingSenderId: "YOUR_SENDER_ID",
+      appId: "YOUR_APP_ID"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    // Salvar lead no Firestore
+    const form = document.getElementById("leadForm");
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const email = document.getElementById("emailInput").value;
+      try {
+        await addDoc(collection(db, "leads"), {
+          email: email,
+          createdAt: serverTimestamp()
+        });
+        alert("🎉 Obrigado! Você agora faz parte da lista VIP Voiala.");
+        form.reset();
+      } catch (error) {
+        console.error("Erro ao salvar lead: ", error);
+        alert("⚠️ Ocorreu um erro, tente novamente mais tarde.");
+      }
+    });
+  </script>
+</body>
+</html>
