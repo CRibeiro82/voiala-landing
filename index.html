@@ -56,7 +56,7 @@
 <body>
   <!-- Logo -->
   <img src="https://cdn.abacus.ai/images/fcd04120-9f7f-4a74-9415-48711bb55fbd.png"
-alt="Voiala Logo" class="logo">
+       alt="Voiala Logo" class="logo">
 
   <!-- Headline -->
   <h1>Seu mentor virtual, quando e como você precisar.</h1>
@@ -81,7 +81,7 @@ alt="Voiala Logo" class="logo">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
     import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
 
-    // Config Firebase (substitua pelos valores do seu .env)
+    // Config Firebase (substitua pelos valores reais do seu Firebase)
     const firebaseConfig = {
       apiKey: "AIzaSyA8-UiB5FbMGLjj03I53Jl-y7XSbGRv3Fc",
       authDomain: "voiala.firebaseapp.com",
@@ -94,11 +94,32 @@ alt="Voiala Logo" class="logo">
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
 
+    // Logs de inicialização
+    console.log("✅ Firebase inicializado:", app);
+    console.log("✅ Firestore conectado:", db);
+
+    // Função de debug manual
+    window.testFirebase = async () => {
+      try {
+        await addDoc(collection(db, "leads"), {
+          email: "teste@debug.com",
+          createdAt: serverTimestamp()
+        });
+        console.log("🎉 Teste de inserção ok!");
+      } catch (error) {
+        console.error("❌ Erro de teste no Firebase:", error);
+      }
+    };
+
     // Salvar lead no Firestore
     const form = document.getElementById("leadForm");
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
+      console.log("📩 Form foi submetido!");
+
       const email = document.getElementById("emailInput").value;
+      console.log("📩 Email capturado:", email); 
+
       try {
         await addDoc(collection(db, "leads"), {
           email: email,
